@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html lang="en" ng-app="app" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html lang="en" ng-app="app" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html lang="en" ng-app="app" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" ng-app="app" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <!-- Website Title & Description for Search Engine purposes -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Empeek ToDo</title>
+  <meta name="description" content="Empeek ToDo">
+  <link rel="icon" href="images/logo.png">
+  <!-- Mobile viewport optimized -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<div id="page-preloader" class="preloader">
+  <div class="loader">
+  </div>
+</div>
+
+<div class="wrapper">
+  <main class="clearfix">
+    <aside>
+      <div class="sidebar">
+        <h1>Main</h1>
+        <ul>
+          <li>Overview</li>
+        </ul>
+      </div>
+    </aside>
+    <article ng-controller="ItemsCtrl as items">
+      <div class="content clearfix">
+        <div class="items">
+          <div class="container-overflow-items">
+            <h2>Items</h2>
+            <form>
+              <label for="newItemName"></label>
+              <input type="text" placeholder="Type name here..." id="newItemName" ng-model="items.newItem.name">
+              <button ng-click="items.addNewItemFn()" class="addNew-button">Add new</button>
+            </form>
+            <ul ng-repeat="item in items.items track by item.id">
+              <li ng-class="{'activeItem':items.isCurrentItem(item)}">
+                <a href="#" ng-click="items.setCurrentItem(item)">
+                  <div class="items-content-block">
+                    <div>{{item.name}}</div>
+                  </div>
+                  <div ng-if="(items.comments | filter:{itemName:item.name}).length > 0" class="comments-counter">{{ (items.comments | filter:{itemName:item.name}).length }}</div>
+                  <button class="deleteItem-button" ng-click="items.removeItemFn(item)">Delete</button>
+                  <hr>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="comments">
+          <div class="container-overflow-comments">
+            <div>
+              <h2>Comments #<span>{{items.items.indexOf(items.currentItem)+1}}</span></h2>
+              <div class="comment-block" ng-repeat="comment in items.comments | filter:{itemName:items.currentItem.name} track by comment.id">
+                <img src="{{comment.ava}}" alt="avatar">
+                <p class="comment-text">
+                  {{comment.text}}
+                </p>
+              </div>
+            </div>
+            <form>
+              <div class="addComment-form">
+                <img src="images/ava_currentUser.png" alt="">
+                <div>
+                  <label for="newCommentText"></label>
+                  <textarea id="newCommentText" ng-model="items.newComment.text" ng-blur="items.addNewCommentFn()"></textarea>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </article>
+  </main>
+</div>
+<!-- PreloaderJS -->
+<script src="preloader.js" ></script>
+<!-- AngularJS -->
+<script src="bower_components/angular/angular.js"></script>
+<!-- ScriptsJS -->
+<script src="app.js"></script>
+<script src="data.service.js"></script>
+<script src="items/items.module.js"></script>
+<script src="items/items.controller.js"></script>
+<!-- ngStorage JS -->
+<script src="bower_components/ngstorage/ngStorage.js"></script>
+<!-- Lodash -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+</body>
+</html>
